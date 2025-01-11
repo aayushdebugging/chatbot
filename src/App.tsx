@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from './components/Sidebar/Sidebar';
 import ChatContainer from './components/Chat/ChatContainer';
 import { Chat } from './types';
+import bg from './assets/bg.jpg';
+
 
 function App() {
   const [chats, setChats] = useState<Chat[]>([
@@ -166,15 +168,16 @@ function App() {
   };
 
   return (
-    <div className="h-screen flex bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 relative overflow-hidden">
+    <div className="h-screen flex bg-gradient-to-br from-black to-black text-gray-100 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -inset-[10px] opacity-50">
-          <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-          <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        </div>
+      <div 
+        className="absolute -inset-[10px] opacity-40"
+        style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '100%' }}
+      >
+        {/* Your content here */}
       </div>
+    </div>
 
       <Sidebar
         chats={chats}
