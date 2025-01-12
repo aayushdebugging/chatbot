@@ -21,7 +21,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   toggleRecording,
 }) => {
   return (
-    <div className="p-4 border-t border-gray-700 bg-gray-800/50 backdrop-blur-lg">
+    <div className="p-4  border-gray-700 bg-gray-800/50 backdrop-blur-lg">
       <form onSubmit={handleSendMessage} className="max-w-4xl mx-auto">
         <div className="flex items-center space-x-2">
           <input

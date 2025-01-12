@@ -1,5 +1,7 @@
 import React from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, User } from 'lucide-react';
+
+
 
 interface ChatHeaderProps {
   setIsSidebarOpen: (open: boolean) => void;
@@ -18,6 +20,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ setIsSidebarOpen }) => {
         <button className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-colors">
           Try Assistant Advanced
         </button>
+      </div>
+      <div className="flex items-center space-x-3 pr-4">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center text-white">
+          <User className="h-5 w-5" />
+        </div>
+        <span className="font-medium">John Doe</span>
       </div>
     </header>
   );

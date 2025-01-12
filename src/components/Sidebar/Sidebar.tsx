@@ -1,5 +1,5 @@
-import React from 'react';
-import { Sparkles, Plus, Settings, X, User } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sparkles, Plus, Settings, X } from 'lucide-react';
 import ChatList from './ChatList';
 import { Chat } from '../../types';
 
@@ -32,51 +32,75 @@ const Sidebar: React.FC<SidebarProps> = ({
   deleteChat,
   setNewTitle,
 }) => {
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+  const [showNewChatText, setShowNewChatText] = useState(false);
+
+  const sidebarWidth = isSidebarExpanded ? 'w-72' : 'w-20';
+
+  // Handle text delay after sidebar expands
+  useEffect(() => {
+    if (isSidebarExpanded) {
+      const timer = setTimeout(() => setShowNewChatText(true), 300); // Delay matches the animation duration
+      return () => clearTimeout(timer); // Cleanup timer on unmount or state change
+    } else {
+      setShowNewChatText(false);
+    }
+  }, [isSidebarExpanded]);
+
   return (
-    <div className={`fixed md:relative inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out w-72 bg-gray-800/50 backdrop-blur-lg border-r border-gray-700 z-30`}>
+    <div
+      className={`fixed md:relative inset-y-0 left-0 transform ${
+        isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      } md:translate-x-0 transition-all duration-500 ease-in-out ${sidebarWidth} bg-gray-800/50 backdrop-blur-lg border-r border-gray-700 z-30 hover:w-72`}
+      onMouseEnter={() => setIsSidebarExpanded(true)}
+      onMouseLeave={() => setIsSidebarExpanded(false)}
+    >
       <div className="h-full flex flex-col">
+        {/* Header */}
         <div className="p-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Sparkles className="h-6 w-6 text-blue-400 animate-pulse" />
-            <span className="font-semibold text-xl">Assistant</span>
+            <Sparkles className="h-6 w-6 ml-3 mt-1 text-blue-400 animate-pulse" />
+            <span className={`font-semibold text-xl ${!isSidebarExpanded ? 'hidden' : ''}`}>Assistant</span>
           </div>
           <button onClick={() => setIsSidebarOpen(false)} className="md:hidden">
             <X className="h-5 w-5" />
           </button>
         </div>
-        
+
+        {/* New Chat Button */}
         <button
           onClick={createNewChat}
-          className="mx-4 flex items-center space-x-2 px-4 py-2 rounded-full border border-gray-600 hover:bg-gray-700/50 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          className={`mx-4 my-2 flex items-center space-x-2 px-4 py-2 rounded-full border border-gray-600 hover:bg-gray-700/50 transition-all duration-300 ${
+            !isSidebarExpanded ? 'justify-center' : ''
+          }`}
         >
-          <Plus className="h-5 w-5" />
-          <span>New chat</span>
+          <Plus className="h-6 w-6" />
+          {/* Conditionally show "New Chat" text */}
+          <span className={`${!showNewChatText ? 'hidden' : ''}`}>New chat</span>
         </button>
 
-        <div className="mt-4 flex-1 overflow-y-auto">
-          <ChatList
-            chats={chats}
-            currentChatId={currentChatId}
-            editingChatId={editingChatId}
-            newTitle={newTitle}
-            setCurrentChatId={setCurrentChatId}
-            startEditingChat={startEditingChat}
-            saveEditedChat={saveEditedChat}
-            deleteChat={deleteChat}
-            setNewTitle={setNewTitle}
-          />
-        </div>
-
-        <div className="p-4 border-t border-gray-700">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center text-white">
-              <User className="h-5 w-5" />
-            </div>
-            <span className="font-medium">John Doe</span>
+        {/* Chat List */}
+        {isSidebarExpanded ? (
+          <div className="mt-4 flex-1 overflow-y-auto">
+            <ChatList
+              chats={chats}
+              currentChatId={currentChatId}
+              editingChatId={editingChatId}
+              newTitle={newTitle}
+              setCurrentChatId={setCurrentChatId}
+              startEditingChat={startEditingChat}
+              saveEditedChat={saveEditedChat}
+              deleteChat={deleteChat}
+              setNewTitle={setNewTitle}
+            />
           </div>
+        ) : null}
+
+        {/* Settings Button */}
+        <div className="absolute bottom-10 w-full flex ml-7">
           <button className="flex items-center space-x-2 text-gray-400 hover:text-gray-200 transition-colors">
-            <Settings className="h-5 w-5" />
-            <span>Settings</span>
+            <Settings className="h-6 w-6" />
+            <span className={`${!isSidebarExpanded ? 'hidden' : ''}`}>Settings</span>
           </button>
         </div>
       </div>
