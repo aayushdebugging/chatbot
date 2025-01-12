@@ -21,7 +21,7 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ setIsSidebarOpen }) => {
           Try Assistant Advanced
         </button>
       </div>
-      <div className="flex items-center space-x-3 pr-4">
+      <div className="flex items-center space-x-3">
         <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center text-white">
           <User className="h-5 w-5" />
         </div>
